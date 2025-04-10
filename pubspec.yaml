@@ -39,14 +39,15 @@ flutter:
     - assets/screens/
 
   fonts:
-    - family: Plus Jakarta
+    - family: PlusJakartaDisplay
       fonts:
         - asset: assets/fonts/plus_jakarta/PlusJakartaDisplay-Regular.otf
         - asset: assets/fonts/plus_jakarta/PlusJakartaDisplay-Medium.otf
           weight: 500
         - asset: assets/fonts/plus_jakarta/PlusJakartaDisplay-Bold.otf
           weight: 700
-    - family: Grandis Extended
+
+    - family: GrandisExtended
       fonts:
         - asset: assets/fonts/grandis_extended/GrandisExtended-Regular.ttf
         - asset: assets/fonts/grandis_extended/GrandisExtended-Thin.ttf
