@@ -14,7 +14,7 @@ class EntryPoint extends StatefulWidget {
 class _EntryPointState extends State<EntryPoint> {
   final List _pages = const [
     HomeScreen(),
-    DiscoverScreen(),
+    // DiscoverScreen(),
     BookmarkScreen(),
     // EmptyCartScreen(), // if Cart is empty
     CartScreen(),
@@ -119,12 +119,12 @@ class _EntryPointState extends State<EntryPoint> {
               activeIcon: svgIcon("assets/icons/Shop.svg", color: primaryColor),
               label: "Shop",
             ),
-            BottomNavigationBarItem(
-              icon: svgIcon("assets/icons/Category.svg"),
-              activeIcon:
-                  svgIcon("assets/icons/Category.svg", color: primaryColor),
-              label: "Discover",
-            ),
+            // BottomNavigationBarItem(
+            //   icon: svgIcon("assets/icons/Category.svg"),
+            //   activeIcon:
+            //       svgIcon("assets/icons/Category.svg", color: primaryColor),
+            //   label: "Discover",
+            // ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Bookmark.svg"),
               activeIcon:
