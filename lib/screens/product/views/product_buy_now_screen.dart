@@ -146,21 +146,21 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
                     ),
                   ),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-                  sliver: ProductListTile(
-                    title: "Check stores",
-                    svgSrc: "assets/icons/Stores.svg",
-                    isShowBottomBorder: true,
-                    press: () {
-                      customModalBottomSheet(
-                        context,
-                        height: MediaQuery.of(context).size.height * 0.92,
-                        child: const LocationPermissonStoreAvailabilityScreen(),
-                      );
-                    },
-                  ),
-                ),
+                // SliverPadding(
+                //   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+                //   sliver: ProductListTile(
+                //     title: "Check stores",
+                //     svgSrc: "assets/icons/Stores.svg",
+                //     isShowBottomBorder: true,
+                //     press: () {
+                //       customModalBottomSheet(
+                //         context,
+                //         height: MediaQuery.of(context).size.height * 0.92,
+                //         child: const LocationPermissonStoreAvailabilityScreen(),
+                //       );
+                //     },
+                //   ),
+                // ),
                 const SliverToBoxAdapter(
                     child: SizedBox(height: defaultPadding))
               ],

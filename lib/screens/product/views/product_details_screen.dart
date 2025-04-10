@@ -67,66 +67,67 @@ class ProductDetailsScreen extends StatelessWidget {
                   "A cool gray cap in soft corduroy. Watch me.' By buying cotton products from Lindex, you’re supporting more responsibly...",
               rating: 4.4,
               numOfReviews: 126,
+              price: 100000,
             ),
-            ProductListTile(
-              svgSrc: "assets/icons/Product.svg",
-              title: "Product Details",
-              press: () {
-                customModalBottomSheet(
-                  context,
-                  height: MediaQuery.of(context).size.height * 0.92,
-                  child: const BuyFullKit(
-                      images: ["assets/screens/Product detail.png"]),
-                );
-              },
-            ),
-            ProductListTile(
-              svgSrc: "assets/icons/Delivery.svg",
-              title: "Shipping Information",
-              press: () {
-                customModalBottomSheet(
-                  context,
-                  height: MediaQuery.of(context).size.height * 0.92,
-                  child: const BuyFullKit(
-                    images: ["assets/screens/Shipping information.png"],
-                  ),
-                );
-              },
-            ),
-            ProductListTile(
-              svgSrc: "assets/icons/Return.svg",
-              title: "Returns",
-              isShowBottomBorder: true,
-              press: () {
-                customModalBottomSheet(
-                  context,
-                  height: MediaQuery.of(context).size.height * 0.92,
-                  child: const ProductReturnsScreen(),
-                );
-              },
-            ),
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(defaultPadding),
-                child: ReviewCard(
-                  rating: 4.3,
-                  numOfReviews: 128,
-                  numOfFiveStar: 80,
-                  numOfFourStar: 30,
-                  numOfThreeStar: 5,
-                  numOfTwoStar: 4,
-                  numOfOneStar: 1,
-                ),
-              ),
-            ),
-            ProductListTile(
-              svgSrc: "assets/icons/Chat.svg",
-              title: "Reviews",
-              isShowBottomBorder: true,
-              press: () {
-                Navigator.pushNamed(context, productReviewsScreenRoute);
-              },
-            ),
+            // ProductListTile(
+            //   svgSrc: "assets/icons/Product.svg",
+            //   title: "Product Details",
+            //   press: () {
+            //     customModalBottomSheet(
+            //       context,
+            //       height: MediaQuery.of(context).size.height * 0.92,
+            //       child: const BuyFullKit(
+            //           images: ["assets/screens/Product detail.png"]),
+            //     );
+            //   },
+            // ),
+            // ProductListTile(
+            //   svgSrc: "assets/icons/Delivery.svg",
+            //   title: "Shipping Information",
+            //   press: () {
+            //     customModalBottomSheet(
+            //       context,
+            //       height: MediaQuery.of(context).size.height * 0.92,
+            //       child: const BuyFullKit(
+            //         images: ["assets/screens/Shipping information.png"],
+            //       ),
+            //     );
+            //   },
+            // ),
+            // ProductListTile(
+            //   svgSrc: "assets/icons/Return.svg",
+            //   title: "Returns",
+            //   isShowBottomBorder: true,
+            //   press: () {
+            //     customModalBottomSheet(
+            //       context,
+            //       height: MediaQuery.of(context).size.height * 0.92,
+            //       child: const ProductReturnsScreen(),
+            //     );
+            //   },
+            // ),
+            // const SliverToBoxAdapter(
+            //   child: Padding(
+            //     padding: EdgeInsets.all(defaultPadding),
+            //     child: ReviewCard(
+            //       rating: 4.3,
+            //       numOfReviews: 128,
+            //       numOfFiveStar: 80,
+            //       numOfFourStar: 30,
+            //       numOfThreeStar: 5,
+            //       numOfTwoStar: 4,
+            //       numOfOneStar: 1,
+            //     ),
+            //   ),
+            // ),
+            // ProductListTile(
+            //   svgSrc: "assets/icons/Chat.svg",
+            //   title: "Reviews",
+            //   isShowBottomBorder: true,
+            //   press: () {
+            //     Navigator.pushNamed(context, productReviewsScreenRoute);
+            //   },
+            // ),
             SliverPadding(
               padding: const EdgeInsets.all(defaultPadding),
               sliver: SliverToBoxAdapter(

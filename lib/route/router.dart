@@ -300,9 +300,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     builder: (context) => const ThanksForOrderScreen(),
     //   );
     default:
+      // return MaterialPageRoute(
+      //   // Make a screen for undefine
+      //   builder: (context) => const OnBordingScreen(),
+      // );
       return MaterialPageRoute(
-        // Make a screen for undefine
-        builder: (context) => const OnBordingScreen(),
+        builder: (context) => const HomeScreen(),
       );
   }
 }
