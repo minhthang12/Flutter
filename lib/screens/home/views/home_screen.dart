@@ -15,12 +15,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Product>> futureProducts;
-
+  List<Product> productList = [];
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    futureProducts = ApiService.fetchProducts();
+    loadInitialProducts();
+  }
+  Future<void> loadInitialProducts() async {
+    final products = await ApiService.fetchProducts();
+    setState(() {
+      productList = products;
+      isLoading = false;
+    });
+  }
+
+  void updateProducts(List<Product> newProducts) {
+    setState(() {
+      productList = [];
+      productList = newProducts;
+    });
   }
 
   @override
@@ -29,25 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(child: OffersCarouselAndCategories()),
             SliverToBoxAdapter(
-              child: FutureBuilder<List<Product>>(
-                future: futureProducts,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text("Lỗi: ${snapshot.error}"));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text("Không có sản phẩm nào"));
-                  } else {
-                    final products = snapshot.data!;
-                    return Padding(
+                child: OffersCarouselAndCategories(
+              onCategorySelected: updateProducts,
+            )),
+            SliverToBoxAdapter(
+              child: productList.isEmpty
+                  ? const Center(child: Text("Không có sản phẩm nào"))
+                  : Padding(
                       padding: const EdgeInsets.all(defaultPadding),
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: products.length,
+                        itemCount: productList.length,
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 200.0,
@@ -56,25 +64,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           childAspectRatio: 0.66,
                         ),
                         itemBuilder: (context, index) {
-                          final product = products[index];
+                          final product = productList[index];
                           return ProductCard(
                             image: product.pictures,
-                            brandName: "Brand", 
+                            brandName: "Brand",
                             title: product.productName,
                             price: product.price.toDouble(),
                             priceAfetDiscount: product.price.toDouble(),
                             dicountpercent: 0,
                             press: () {
                               Navigator.pushNamed(
-                                  context, productDetailsScreenRoute);
+                                context,
+                                productDetailsScreenRoute,
+                                arguments: {
+                                  'productId': product.id,
+                                  'isProductAvailable': true,
+                                },
+                              );
                             },
                           );
                         },
                       ),
-                    );
-                  }
-                },
-              ),
+                    ),
             ),
           ],
         ),

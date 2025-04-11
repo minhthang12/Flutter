@@ -73,9 +73,9 @@ final passwordValidator = MultiValidator([
       errorText: 'passwords must have at least one special character')
 ]);
 
-final emaildValidator = MultiValidator([
-  RequiredValidator(errorText: 'Email is required'),
-  EmailValidator(errorText: "Enter a valid email address"),
+final phoneValidator = MultiValidator([
+  RequiredValidator(errorText: 'Phone is required'),
+  MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
 ]);
 
 const pasNotMatchErrorText = "passwords do not match";

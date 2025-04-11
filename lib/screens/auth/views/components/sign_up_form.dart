@@ -21,7 +21,7 @@ class SignUpForm extends StatelessWidget {
             onSaved: (emal) {
               // Email
             },
-            validator: emaildValidator.call,
+            validator: phoneValidator.call,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(

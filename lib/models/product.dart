@@ -18,6 +18,10 @@ class Product {
     required this.categoryId,
     required this.providerId,
   });
+    @override
+  String toString() {
+    return 'Product(name: $productName, price: $price)';
+  }
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(

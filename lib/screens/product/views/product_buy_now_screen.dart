@@ -15,18 +15,46 @@ import 'components/selected_size.dart';
 import 'components/unit_price.dart';
 
 class ProductBuyNowScreen extends StatefulWidget {
-  const ProductBuyNowScreen({super.key});
-
+  const ProductBuyNowScreen(
+      {super.key,
+      required this.productId,
+      required this.productName,
+      required this.productPrice,
+      required this.productImageUrl});
+  final int productId;
+  final String productName;
+  final int productPrice;
+  final String productImageUrl;
   @override
   _ProductBuyNowScreenState createState() => _ProductBuyNowScreenState();
 }
 
 class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
+  int quantity = 1;
+  int selectSize = 1;
+  void increment() {
+    setState(() {
+      quantity++;
+    });
+  }
+
+  void decrement() {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+      });
+    }
+  }
+
+  double totalPrice() {
+    return (widget.productPrice * quantity).toDouble();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CartButton(
-        price: 269.4,
+        price: totalPrice(),
         title: "Add to cart",
         subTitle: "Total price",
         press: () {
@@ -47,7 +75,7 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
               children: [
                 const BackButton(),
                 Text(
-                  "Sleeveless Ruffle",
+                  widget.productName,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 IconButton(
@@ -61,12 +89,12 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
           Expanded(
             child: CustomScrollView(
               slivers: [
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                     child: AspectRatio(
                       aspectRatio: 1.05,
-                      child: NetworkImageWithLoader(productDemoImg1),
+                      child: NetworkImageWithLoader(widget.productImageUrl),
                     ),
                   ),
                 ),
@@ -76,76 +104,84 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: UnitPrice(
-                            price: 145,
-                            priceAfterDiscount: 134.7,
+                            // price: 145,
+                            priceAfterDiscount: widget.productPrice.toDouble(),
                           ),
                         ),
                         ProductQuantity(
-                          numOfItem: 2,
-                          onIncrement: () {},
-                          onDecrement: () {},
+                          numOfItem: quantity,
+                          onIncrement: () {
+                            increment();
+                          },
+                          onDecrement: () {
+                            decrement();
+                          },
                         ),
                       ],
                     ),
                   ),
                 ),
                 const SliverToBoxAdapter(child: Divider()),
-                SliverToBoxAdapter(
-                  child: SelectedColors(
-                    colors: const [
-                      Color(0xFFEA6262),
-                      Color(0xFFB1CC63),
-                      Color(0xFFFFBF5F),
-                      Color(0xFF9FE1DD),
-                      Color(0xFFC482DB),
-                    ],
-                    selectedColorIndex: 2,
-                    press: (value) {},
-                  ),
-                ),
+                // SliverToBoxAdapter(
+                //   child: SelectedColors(
+                //     colors: const [
+                //       Color(0xFFEA6262),
+                //       Color(0xFFB1CC63),
+                //       Color(0xFFFFBF5F),
+                //       Color(0xFF9FE1DD),
+                //       Color(0xFFC482DB),
+                //     ],
+                //     selectedColorIndex: 2,
+                //     press: (value) {},
+                //   ),
+                // ),
                 SliverToBoxAdapter(
                   child: SelectedSize(
                     sizes: const ["S", "M", "L", "XL", "XXL"],
-                    selectedIndex: 1,
-                    press: (value) {},
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-                  sliver: ProductListTile(
-                    title: "Size guide",
-                    svgSrc: "assets/icons/Sizeguid.svg",
-                    isShowBottomBorder: true,
-                    press: () {
-                      customModalBottomSheet(
-                        context,
-                        height: MediaQuery.of(context).size.height * 0.9,
-                        child: const SizeGuideScreen(),
-                      );
+                    selectedIndex: selectSize,
+                    press: (value) {
+                      setState(() {
+                        selectSize = value;
+                      });
                     },
                   ),
                 ),
-                SliverPadding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultPadding),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: defaultPadding / 2),
-                        Text(
-                          "Store pickup availability",
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: defaultPadding / 2),
-                        const Text(
-                            "Select a size to check store availability and In-Store pickup options.")
-                      ],
-                    ),
-                  ),
-                ),
+                // SliverPadding(
+                //   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+                //   sliver: ProductListTile(
+                //     title: "Size guide",
+                //     svgSrc: "assets/icons/Sizeguid.svg",
+                //     isShowBottomBorder: true,
+                //     press: () {
+                //       customModalBottomSheet(
+                //         context,
+                //         height: MediaQuery.of(context).size.height * 0.9,
+                //         child: const SizeGuideScreen(),
+                //       );
+                //     },
+                //   ),
+                // ),
+                // SliverPadding(
+                //   padding:
+                //       const EdgeInsets.symmetric(horizontal: defaultPadding),
+                //   sliver: SliverToBoxAdapter(
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         const SizedBox(height: defaultPadding / 2),
+                //         Text(
+                //           "Store pickup availability",
+                //           style: Theme.of(context).textTheme.titleSmall,
+                //         ),
+                //         const SizedBox(height: defaultPadding / 2),
+                //         const Text(
+                //             "Select a size to check store availability and In-Store pickup options.")
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 // SliverPadding(
                 //   padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                 //   sliver: ProductListTile(

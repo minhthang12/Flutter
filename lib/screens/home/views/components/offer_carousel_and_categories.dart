@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import 'categories.dart';
 import 'offers_carousel.dart';
+import 'package:shop/models/product.dart';
 
 class OffersCarouselAndCategories extends StatelessWidget {
+    final Function(List<Product>) onCategorySelected;
   const OffersCarouselAndCategories({
     super.key,
+    required this.onCategorySelected,
   });
 
   @override
@@ -27,7 +30,7 @@ class OffersCarouselAndCategories extends StatelessWidget {
         ),
         // While loading use 👇
         // const CategoriesSkelton(),
-        const Categories(),
+        Categories(onCategorySelected: onCategorySelected),
       ],
     );
   }

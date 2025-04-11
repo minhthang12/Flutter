@@ -1,61 +1,80 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop/route/screen_export.dart';
-
+import 'package:shop/services/api_service.dart';
 import '../../../../constants.dart';
+import 'package:shop/models/category.dart' as categoryModel;
+import 'package:shop/models/product.dart';
 
 // For preview
-class CategoryModel {
-  final String name;
-  final String? svgSrc, route;
-
-  CategoryModel({
-    required this.name,
-    this.svgSrc,
-    this.route,
-  });
+class Categories extends StatefulWidget {
+  final Function(List<Product>) onCategorySelected;
+  const Categories({super.key, required this.onCategorySelected});
+  @override
+  State<Categories> createState() => _CategoriesState();
 }
 
-List<CategoryModel> demoCategories = [
-  CategoryModel(name: "All Categories"),
-  CategoryModel(name: "Man's", svgSrc: "assets/icons/Man.svg", route: onSaleScreenRoute),
-  CategoryModel(name: "Woman’s", svgSrc: "assets/icons/Woman.svg"),
-  CategoryModel(
-      name: "Kids", svgSrc: "assets/icons/Child.svg", route: onSaleScreenRoute),
-];
-// End For Preview
+class _CategoriesState extends State<Categories> {
+  List<categoryModel.Category> categories = [];
+  bool isLoading = true;
+  int selectedCategoryId = 0;
+  @override
+  void initState() {
+    super.initState();
+    loadCategories();
+    
+  }
 
-class Categories extends StatelessWidget {
-  const Categories({
-    super.key,
-  });
+  Future<void> loadCategories() async {
+    try {
+      final data = await ApiService.fetchCategories();
+      setState(() {
+        categories = [
+          categoryModel.Category(id: 0, categoryName: "All Categories"),
+          ...data
+        ];
+        isLoading = false;
+      });
+    } catch (e) {
+      debugPrint("Error loading categories: $e");
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: [
-          ...List.generate(
-            demoCategories.length,
-            (index) => Padding(
-              padding: EdgeInsets.only(
-                  left: index == 0 ? defaultPadding : defaultPadding / 2,
-                  right:
-                      index == demoCategories.length - 1 ? defaultPadding : 0),
-              child: CategoryBtn(
-                category: demoCategories[index].name,
-                svgSrc: demoCategories[index].svgSrc,
-                isActive: index == 0,
-                press: () {
-                  if (demoCategories[index].route != null) {
-                    Navigator.pushNamed(context, demoCategories[index].route!);
+        children: List.generate(
+          categories.length,
+          (index) => Padding(
+            padding: EdgeInsets.only(
+                left: index == 0 ? defaultPadding : defaultPadding / 2,
+                right: index == categories.length - 1 ? defaultPadding : 0),
+            child: CategoryBtn(
+                category: categories[index].categoryName,
+                isActive: selectedCategoryId == categories[index].id,
+                press: () async {
+                  setState(() {
+                    selectedCategoryId = categories[index].id;
+                  });
+                  if (categories[index].id != 0) {
+                    final products = await ApiService.fetchProductsByCategory(
+                        categories[index].id);
+                    widget.onCategorySelected(products);
+                  } else {
+                    final allProducts = await ApiService.fetchProducts();
+                    widget.onCategorySelected(allProducts);
                   }
-                },
-              ),
-            ),
+                }),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -65,13 +84,11 @@ class CategoryBtn extends StatelessWidget {
   const CategoryBtn({
     super.key,
     required this.category,
-    this.svgSrc,
     required this.isActive,
     required this.press,
   });
 
   final String category;
-  final String? svgSrc;
   final bool isActive;
   final VoidCallback press;
 
@@ -91,29 +108,17 @@ class CategoryBtn extends StatelessWidget {
                   : Theme.of(context).dividerColor),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
         ),
-        child: Row(
-          children: [
-            if (svgSrc != null)
-              SvgPicture.asset(
-                svgSrc!,
-                height: 20,
-                colorFilter: ColorFilter.mode(
-                  isActive ? Colors.white : Theme.of(context).iconTheme.color!,
-                  BlendMode.srcIn,
-                ),
-              ),
-            if (svgSrc != null) const SizedBox(width: defaultPadding / 2),
-            Text(
-              category,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: isActive
-                    ? Colors.white
-                    : Theme.of(context).textTheme.bodyLarge!.color,
-              ),
+        child: Center(
+          child: Text(
+            category,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: isActive
+                  ? Colors.white
+                  : Theme.of(context).textTheme.bodyLarge!.color,
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/route/route_constants.dart';
+import 'package:shop/services/api_service.dart';
 
 import 'components/login_form.dart';
 
@@ -13,6 +15,38 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void handleLogin() async {
+    final response = await ApiService.loginUser(
+        int.parse(phoneController.text), passwordController.text);
+    if (response.statusCode == 200) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('authToken', response.body);
+      Navigator.pushNamedAndRemoveUntil(context, entryPointScreenRoute,
+          ModalRoute.withName(logInScreenRoute));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login failed")),
+      );
+    }
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('authToken');
+    print(token);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Log in with your data that you intered during your registration.",
                   ),
                   const SizedBox(height: defaultPadding),
-                  LogInForm(formKey: _formKey),
+                  LogInForm(
+                    formKey: _formKey,
+                    phoneController: phoneController,
+                    passwordController: passwordController,
+                  ),
                   Align(
                     child: TextButton(
                       child: const Text("Forgot password"),
@@ -51,18 +89,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: size.height > 700
-                        ? size.height * 0.1
-                        : defaultPadding,
+                    height:
+                        size.height > 700 ? size.height * 0.1 : defaultPadding,
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            entryPointScreenRoute,
-                            ModalRoute.withName(logInScreenRoute));
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      //   Navigator.pushNamedAndRemoveUntil(
+                      //       context,
+                      //       entryPointScreenRoute,
+                      //       ModalRoute.withName(logInScreenRoute));
+                      // }
+                      handleLogin();
                     },
                     child: const Text("Log in"),
                   ),

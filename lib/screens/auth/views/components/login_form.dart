@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../constants.dart';
 
@@ -7,8 +8,11 @@ class LogInForm extends StatelessWidget {
   const LogInForm({
     super.key,
     required this.formKey,
+    required this.phoneController,
+    required this.passwordController,
   });
-
+  final TextEditingController phoneController;
+  final TextEditingController passwordController;
   final GlobalKey<FormState> formKey;
 
   @override
@@ -18,19 +22,23 @@ class LogInForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: phoneController,
             onSaved: (emal) {
               // Email
             },
-            validator: emaildValidator.call,
+            validator: phoneValidator.call,
             textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.emailAddress,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              hintText: "Email address",
+              hintText: "Phone number",
               prefixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
                 child: SvgPicture.asset(
-                  "assets/icons/Message.svg",
+                  "assets/icons/Call.svg",
                   height: 24,
                   width: 24,
                   colorFilter: ColorFilter.mode(
@@ -46,6 +54,7 @@ class LogInForm extends StatelessWidget {
           ),
           const SizedBox(height: defaultPadding),
           TextFormField(
+            controller: passwordController,
             onSaved: (pass) {
               // Password
             },

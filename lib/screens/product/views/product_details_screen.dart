@@ -6,6 +6,7 @@ import 'package:shop/components/custom_modal_bottom_sheet.dart';
 import 'package:shop/components/product/product_card.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/screens/product/views/product_returns_screen.dart';
+import 'package:shop/models/product.dart';
 
 import 'package:shop/route/screen_export.dart';
 
@@ -15,23 +16,86 @@ import 'components/product_info.dart';
 import 'components/product_list_tile.dart';
 import '../../../components/review_card.dart';
 import 'product_buy_now_screen.dart';
+import 'package:shop/services/api_service.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({super.key, this.isProductAvailable = true});
-
+class ProductDetailsScreen extends StatefulWidget {
+  const ProductDetailsScreen({
+    super.key,
+    required this.productId,
+    this.isProductAvailable = true,
+  });
+  final int productId;
   final bool isProductAvailable;
+  @override
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenSate();
+}
+
+class _ProductDetailsScreenSate extends State<ProductDetailsScreen> {
+  Product? products;
+  bool isLoading = true;
+  String? errorMessage;
+  List<Product> productList = [];
+  @override
+  void initState() {
+    super.initState();
+    loadProductsById();
+  }
+
+  Future<void> loadProductsById() async {
+    try {
+      final result = await ApiService.fetchProductById(widget.productId);
+      setState(() {
+        products = result;
+        isLoading = false;
+      });
+      await fetchProductsByCategory();
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchProductsByCategory() async {
+    try {
+      final result =
+          await ApiService.fetchProductsByCategory(products!.categoryId);
+      final filterList =
+          result.where((product) => product.id != products!.id).toList();
+      setState(() {
+        productList = filterList;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
-      bottomNavigationBar: isProductAvailable
+      bottomNavigationBar: widget.isProductAvailable
           ? CartButton(
-              price: 140,
+              price: products!.price.toDouble(),
               press: () {
                 customModalBottomSheet(
                   context,
                   height: MediaQuery.of(context).size.height * 0.92,
-                  child: const ProductBuyNowScreen(),
+                  child: ProductBuyNowScreen(
+                    productId: products!.id,
+                    productName: products!.productName,
+                    productPrice: products!.price,
+                    productImageUrl: products!.pictures,
+                  ),
                 );
               },
             )
@@ -56,78 +120,22 @@ class ProductDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const ProductImages(
-              images: [productDemoImg1, productDemoImg2, productDemoImg3],
+            ProductImages(
+              images: [
+                products!.pictures,
+                products!.pictures,
+                products!.pictures
+              ],
             ),
             ProductInfo(
               brand: "LIPSY LONDON",
-              title: "Sleeveless Ruffle",
-              isAvailable: isProductAvailable,
-              description:
-                  "A cool gray cap in soft corduroy. Watch me.' By buying cotton products from Lindex, you’re supporting more responsibly...",
+              title: products!.productName,
+              isAvailable: widget.isProductAvailable,
+              description: products!.productDescription,
               rating: 4.4,
               numOfReviews: 126,
-              price: 100000,
+              price: products?.price,
             ),
-            // ProductListTile(
-            //   svgSrc: "assets/icons/Product.svg",
-            //   title: "Product Details",
-            //   press: () {
-            //     customModalBottomSheet(
-            //       context,
-            //       height: MediaQuery.of(context).size.height * 0.92,
-            //       child: const BuyFullKit(
-            //           images: ["assets/screens/Product detail.png"]),
-            //     );
-            //   },
-            // ),
-            // ProductListTile(
-            //   svgSrc: "assets/icons/Delivery.svg",
-            //   title: "Shipping Information",
-            //   press: () {
-            //     customModalBottomSheet(
-            //       context,
-            //       height: MediaQuery.of(context).size.height * 0.92,
-            //       child: const BuyFullKit(
-            //         images: ["assets/screens/Shipping information.png"],
-            //       ),
-            //     );
-            //   },
-            // ),
-            // ProductListTile(
-            //   svgSrc: "assets/icons/Return.svg",
-            //   title: "Returns",
-            //   isShowBottomBorder: true,
-            //   press: () {
-            //     customModalBottomSheet(
-            //       context,
-            //       height: MediaQuery.of(context).size.height * 0.92,
-            //       child: const ProductReturnsScreen(),
-            //     );
-            //   },
-            // ),
-            // const SliverToBoxAdapter(
-            //   child: Padding(
-            //     padding: EdgeInsets.all(defaultPadding),
-            //     child: ReviewCard(
-            //       rating: 4.3,
-            //       numOfReviews: 128,
-            //       numOfFiveStar: 80,
-            //       numOfFourStar: 30,
-            //       numOfThreeStar: 5,
-            //       numOfTwoStar: 4,
-            //       numOfOneStar: 1,
-            //     ),
-            //   ),
-            // ),
-            // ProductListTile(
-            //   svgSrc: "assets/icons/Chat.svg",
-            //   title: "Reviews",
-            //   isShowBottomBorder: true,
-            //   press: () {
-            //     Navigator.pushNamed(context, productReviewsScreenRoute);
-            //   },
-            // ),
             SliverPadding(
               padding: const EdgeInsets.all(defaultPadding),
               sliver: SliverToBoxAdapter(
@@ -140,24 +148,41 @@ class ProductDetailsScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 220,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.only(
-                        left: defaultPadding,
-                        right: index == 4 ? defaultPadding : 0),
-                    child: ProductCard(
-                      image: productDemoImg2,
-                      title: "Sleeveless Tiered Dobby Swing Dress",
-                      brandName: "LIPSY LONDON",
-                      price: 24.65,
-                      priceAfetDiscount: index.isEven ? 20.99 : null,
-                      dicountpercent: index.isEven ? 25 : null,
-                      press: () {},
-                    ),
-                  ),
-                ),
+                child: productList.isEmpty
+                    ? const Center(child: Text("Không có sản phẩm tương tự"))
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: productList.length,
+                        itemBuilder: (context, index) {
+                          final product = productList[index];
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              left: defaultPadding,
+                              right: index == productList.length - 1
+                                  ? defaultPadding
+                                  : 0,
+                            ),
+                            child: ProductCard(
+                              image: product.pictures,
+                              title: product.productName,
+                              brandName: "LIPSY LONDON",
+                              price: product.price.toDouble(),
+                              priceAfetDiscount: product.price.toDouble(),
+                              dicountpercent: 0,
+                              press: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  productDetailsScreenRoute,
+                                  arguments: {
+                                    'productId': product.id,
+                                    'isProductAvailable': true,
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
               ),
             ),
             const SliverToBoxAdapter(
