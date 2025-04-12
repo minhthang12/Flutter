@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     loadInitialProducts();
   }
+
   Future<void> loadInitialProducts() async {
     final products = await ApiService.fetchProducts();
     setState(() {
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             brandName: "Brand",
                             title: product.productName,
                             price: product.price.toDouble(),
-                            priceAfetDiscount: product.price.toDouble(),
+                            // priceAfetDiscount: product.price.toDouble(),
                             dicountpercent: 0,
                             press: () {
                               Navigator.pushNamed(

@@ -68,14 +68,14 @@ const Duration defaultDuration = Duration(milliseconds: 300);
 
 final passwordValidator = MultiValidator([
   RequiredValidator(errorText: 'Password is required'),
-  MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
-  PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-      errorText: 'passwords must have at least one special character')
+  // MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
+  // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+  //     errorText: 'passwords must have at least one special character')
 ]);
 
 final phoneValidator = MultiValidator([
   RequiredValidator(errorText: 'Phone is required'),
-  MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
+  // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
 ]);
 
 const pasNotMatchErrorText = "passwords do not match";

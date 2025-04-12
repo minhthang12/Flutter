@@ -40,22 +40,22 @@ class ProductCard extends StatelessWidget {
                     right: defaultPadding / 2,
                     top: defaultPadding / 2,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding / 2),
-                      height: 16,
-                      decoration: const BoxDecoration(
-                        color: errorColor,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(defaultBorderRadious)),
-                      ),
-                      child: Text(
-                        "$dicountpercent% off",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
+                        // padding: const EdgeInsets.symmetric(
+                        //     horizontal: defaultPadding / 2),
+                        // height: 16,
+                        // decoration: const BoxDecoration(
+                        //   color: errorColor,
+                        //   borderRadius: BorderRadius.all(
+                        //       Radius.circular(defaultBorderRadious)),
+                        // ),
+                        // child: Text(
+                        //   "$dicountpercent% off",
+                        //   style: const TextStyle(
+                        //       color: Colors.white,
+                        //       fontSize: 10,
+                        //       fontWeight: FontWeight.w500),
+                        // ),
+                        ),
                   )
               ],
             ),

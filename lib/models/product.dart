@@ -18,7 +18,7 @@ class Product {
     required this.categoryId,
     required this.providerId,
   });
-    @override
+  @override
   String toString() {
     return 'Product(name: $productName, price: $price)';
   }
@@ -31,8 +31,16 @@ class Product {
       productDescription: json['productDescription'],
       pictures: json['pictures'],
       size: json['size'],
-      categoryId: json['categoryId'],
-      providerId: json['providerId'],
+      categoryId: json['categoryId'] ?? 0,
+      providerId: json['providerId'] ?? 0,
     );
   }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'productName': productName,
+        'price': price,
+        'productDescription': productDescription,
+        'pictures': pictures,
+        'size': size,
+      };
 }

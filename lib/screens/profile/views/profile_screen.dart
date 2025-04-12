@@ -4,6 +4,7 @@ import 'package:shop/components/list_tile/divider_list_tile.dart';
 import 'package:shop/components/network_image_with_loader.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/route/screen_export.dart';
+import 'package:shop/tokenStorage/token_storage.dart';
 
 import 'components/profile_card.dart';
 import 'components/profile_menu_item_list_tile.dart';
@@ -67,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
               Navigator.pushNamed(context, walletScreenRoute);
             },
           ),
-          
+
           // const SizedBox(height: defaultPadding),
           // Padding(
           //   padding: const EdgeInsets.symmetric(
@@ -115,7 +116,10 @@ class ProfileScreen extends StatelessWidget {
 
           // Log Out
           ListTile(
-            onTap: () {},
+            onTap: () async {
+              await TokenStorage.clearToken();
+              Navigator.pushNamed(context, logInScreenRoute);
+            },
             minLeadingWidth: 24,
             leading: SvgPicture.asset(
               "assets/icons/Logout.svg",

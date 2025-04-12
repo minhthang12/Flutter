@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop/components/cart_button.dart';
@@ -7,6 +9,8 @@ import 'package:shop/screens/product/views/added_to_cart_message_screen.dart';
 import 'package:shop/screens/product/views/components/product_list_tile.dart';
 import 'package:shop/screens/product/views/location_permission_store_availability_screen.dart';
 import 'package:shop/screens/product/views/size_guide_screen.dart';
+import 'package:shop/services/api_service.dart';
+import 'package:shop/tokenStorage/token_storage.dart';
 
 import '../../../constants.dart';
 import 'components/product_quantity.dart';
@@ -50,6 +54,16 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
     return (widget.productPrice * quantity).toDouble();
   }
 
+  void addToCard() async {
+    final response = await ApiService.addToCart(
+        productId: widget.productId, quantity: quantity);
+    if (response.statusCode == 201) {
+      print("Product added to cart successfully!");
+    } else {
+      print("Failed to add product");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +72,7 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
         title: "Add to cart",
         subTitle: "Total price",
         press: () {
+          addToCard();
           customModalBottomSheet(
             context,
             isDismissible: false,

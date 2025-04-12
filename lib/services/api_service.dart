@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/models/cart_response.dart';
+import 'package:shop/tokenStorage/token_storage.dart';
 import '../models/product.dart';
 import '../models/category.dart';
 
@@ -62,6 +64,86 @@ class ApiService {
         'phone': phone,
         'password': password,
       }),
+    );
+    return response;
+  }
+
+  static Future<http.Response> addToCart({
+    required int productId,
+    required int quantity,
+  }) async {
+    final url = Uri.parse('$_baseUrl/cart/add');
+    final token = await TokenStorage.getToken();
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        'productID': productId,
+        'quantity': quantity,
+      }),
+    );
+
+    return response;
+  }
+
+  static Future<CartResponse> fetchCart() async {
+    final token = await TokenStorage.getToken();
+    final response = await http.get(
+      Uri.parse("$_baseUrl/cart/"),
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes));
+      return CartResponse.fromJson(data);
+    } else {
+      throw Exception("❌ Failed to fetch cart: ${response.statusCode}");
+    }
+  }
+
+  static Future<http.Response> cartUpdateIncrease(int productId) async {
+    final token = await TokenStorage.getToken();
+    final url =
+        Uri.parse('$_baseUrl/cart/update/increase?product_id=$productId');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    return response;
+  }
+
+  static Future<http.Response> cartUpdateDecrease(int productId) async {
+    final token = await TokenStorage.getToken();
+    final url =
+        Uri.parse('$_baseUrl/cart/update/decrease?product_id=$productId');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+    return response;
+  }
+
+  static Future<http.Response> cartDeleteItem(int cartItemId) async {
+    final token = await TokenStorage.getToken();
+    final url = Uri.parse('$_baseUrl/cart/delete?cartItemId=$cartItemId');
+    final response = await http.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
     );
     return response;
   }

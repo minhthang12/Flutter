@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/route/route_constants.dart';
 import 'package:shop/services/api_service.dart';
+import 'package:shop/tokenStorage/token_storage.dart';
 
 import 'components/login_form.dart';
 
@@ -28,6 +29,18 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    checkTokenExpired();
+  }
+
+  void checkTokenExpired() async {
+    final token = await TokenStorage.getToken();
+    final isExpired = await TokenStorage.isTokenExpired(token!);
+    if (!isExpired) {
+      Navigator.pushNamedAndRemoveUntil(context, entryPointScreenRoute,
+          ModalRoute.withName(logInScreenRoute));
+    } else {
+      print("Token đã hết hạn vui lòng đăng nhập lại");
+    }
   }
 
   void handleLogin() async {
@@ -43,9 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
         const SnackBar(content: Text("Login failed")),
       );
     }
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('authToken');
-    print(token);
   }
 
   @override
@@ -94,13 +104,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
                       //   Navigator.pushNamedAndRemoveUntil(
                       //       context,
                       //       entryPointScreenRoute,
                       //       ModalRoute.withName(logInScreenRoute));
                       // }
-                      handleLogin();
+                      if (_formKey.currentState!.validate()) {
+                        handleLogin();
+                      }
                     },
                     child: const Text("Log in"),
                   ),

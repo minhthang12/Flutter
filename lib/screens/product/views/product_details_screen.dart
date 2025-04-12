@@ -167,7 +167,7 @@ class _ProductDetailsScreenSate extends State<ProductDetailsScreen> {
                               title: product.productName,
                               brandName: "LIPSY LONDON",
                               price: product.price.toDouble(),
-                              priceAfetDiscount: product.price.toDouble(),
+                              // priceAfetDiscount: product.price.toDouble(),
                               dicountpercent: 0,
                               press: () {
                                 Navigator.pushNamed(
