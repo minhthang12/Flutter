@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shop/screens/auth/views/components/sign_up_form.dart';
 import 'package:shop/route/route_constants.dart';
+import 'package:shop/services/api_service.dart';
 
 import '../../../constants.dart';
 
@@ -14,6 +15,37 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void handleSignUp() async {
+    final response = await ApiService.signUpUser(
+        int.parse(phoneController.text),
+        passwordController.text,
+        emailController.text,
+        nameController.text);
+    if (response.statusCode == 200) {
+      Navigator.pushNamed(context, logInScreenRoute);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Register Success")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Register failed")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +73,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     "Please enter your valid data in order to create an account.",
                   ),
                   const SizedBox(height: defaultPadding),
-                  SignUpForm(formKey: _formKey),
+                  SignUpForm(
+                      formKey: _formKey,
+                      nameController: nameController,
+                      emailController: emailController,
+                      phoneController: phoneController,
+                      passwordController: passwordController),
                   const SizedBox(height: defaultPadding),
                   Row(
                     children: [
@@ -81,7 +118,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // There is 2 more screens while user complete their profile
                       // afre sign up, it's available on the pro version get it now
                       // 🔗 https://theflutterway.gumroad.com/l/fluttershop
-                      Navigator.pushNamed(context, entryPointScreenRoute);
+                      if (_formKey.currentState!.validate()) {
+                        handleSignUp();
+                      }
                     },
                     child: const Text("Continue"),
                   ),
@@ -91,7 +130,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const Text("Do you have an account?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, logInScreenRoute);
+                          if (_formKey.currentState!.validate()) {
+                            handleSignUp();
+                          }
+                          // Navigator.pushNamed(context, logInScreenRoute);
                         },
                         child: const Text("Log in"),
                       )

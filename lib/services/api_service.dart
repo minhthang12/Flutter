@@ -68,6 +68,19 @@ class ApiService {
     return response;
   }
 
+  static Future<http.Response> signUpUser(
+      int phone, String password, String email, String name) async {
+    final url = Uri.parse('$_baseUrl/api/v1/auth/register');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+          {'phone': phone, 'password': password, 'email': email, 'name': name}),
+    );
+    return response;
+  }
+
   static Future<http.Response> addToCart({
     required int productId,
     required int quantity,
