@@ -160,4 +160,20 @@ class ApiService {
     );
     return response;
   }
+
+  static Future<http.Response> createOrder(
+      CartResponse cartResponse, String address, String paymentMethod) async {
+    final token = await TokenStorage.getToken();
+    final url = Uri.parse(
+        '$_baseUrl/order/create?address=$address&payment_method=$paymentMethod');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(cartResponse.toJson()),
+    );
+    return response;
+  }
 }

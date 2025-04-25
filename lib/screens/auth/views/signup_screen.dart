@@ -80,38 +80,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       phoneController: phoneController,
                       passwordController: passwordController),
                   const SizedBox(height: defaultPadding),
-                  Row(
-                    children: [
-                      Checkbox(
-                        onChanged: (value) {},
-                        value: false,
-                      ),
-                      Expanded(
-                        child: Text.rich(
-                          TextSpan(
-                            text: "I agree with the",
-                            children: [
-                              TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(
-                                        context, termsOfServicesScreenRoute);
-                                  },
-                                text: " Terms of service ",
-                                style: const TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const TextSpan(
-                                text: "& privacy policy.",
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Checkbox(
+                  //       onChanged: (value) {},
+                  //       value: false,
+                  //     ),
+                  //     Expanded(
+                  //       child: Text.rich(
+                  //         TextSpan(
+                  //           text: "I agree with the",
+                  //           children: [
+                  //             TextSpan(
+                  //               recognizer: TapGestureRecognizer()
+                  //                 ..onTap = () {
+                  //                   Navigator.pushNamed(
+                  //                       context, termsOfServicesScreenRoute);
+                  //                 },
+                  //               text: " Terms of service ",
+                  //               style: const TextStyle(
+                  //                 color: primaryColor,
+                  //                 fontWeight: FontWeight.w500,
+                  //               ),
+                  //             ),
+                  //             const TextSpan(
+                  //               text: "& privacy policy.",
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
                   const SizedBox(height: defaultPadding * 2),
                   ElevatedButton(
                     onPressed: () {
@@ -133,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (_formKey.currentState!.validate()) {
                             handleSignUp();
                           }
-                          // Navigator.pushNamed(context, logInScreenRoute);
+                          Navigator.pushNamed(context, logInScreenRoute);
                         },
                         child: const Text("Log in"),
                       )

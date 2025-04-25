@@ -29,7 +29,7 @@ class SignUpForm extends StatelessWidget {
             onSaved: (emal) {
               // Email
             },
-            validator: phoneValidator.call,
+            validator: nameValidator.call,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.name,
             decoration: InputDecoration(
@@ -92,7 +92,7 @@ class SignUpForm extends StatelessWidget {
             onSaved: (emal) {
               // Email
             },
-            validator: phoneValidator.call,
+            validator: emailValidator.call,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(

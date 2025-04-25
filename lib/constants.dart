@@ -77,5 +77,13 @@ final phoneValidator = MultiValidator([
   RequiredValidator(errorText: 'Phone is required'),
   // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
 ]);
+final emailValidator = MultiValidator([
+  RequiredValidator(errorText: 'Email is required'),
+  // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
+]);
+final nameValidator = MultiValidator([
+  RequiredValidator(errorText: 'Name is required'),
+  // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
+]);
 
 const pasNotMatchErrorText = "passwords do not match";

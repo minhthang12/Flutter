@@ -77,6 +77,19 @@ class _CartScreenState extends State<CartScreen> {
     updateTotalCost();
   }
 
+  void createOrder() async {
+    if(cart == null || cart!.cartItemDTOList.isEmpty) {
+      print("Cart is empty");
+      return;
+    }
+    final response = await ApiService.createOrder(cart!, addressController.text, selectedPaymentMethod);
+    if (response.statusCode == 201) {
+      print("Order created successfully!");
+    } else {
+      print("Failed to create order: ${response.statusCode}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,13 +128,17 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                             )),
                         const SizedBox(height: 24),
+                        _buildAddressSection(),
+                        _buildPaymentMethodSection(),
                         _buildOrderSummary(),
                         const SizedBox(height: 24),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              createOrder();
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepPurple,
                               shape: RoundedRectangleBorder(
@@ -261,4 +278,99 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+}
+
+TextEditingController addressController =
+    TextEditingController(text: "123 Nguyễn Văn Cừ, Quận 5, TP.HCM");
+String selectedPaymentMethod = "Credit Card";
+final List<String> paymentMethods = [
+  "Credit Card",
+  "Cash on Delivery",
+  "Momo",
+  "ZaloPay",
+];
+Widget _buildAddressSection() {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    margin: const EdgeInsets.only(bottom: 16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.shade200,
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Delivery Address",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        TextField(
+          controller: addressController,
+          decoration: InputDecoration(
+            hintText: "Enter your delivery address",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildPaymentMethodSection() {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    margin: const EdgeInsets.only(bottom: 16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.shade200,
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Payment Method",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          value: selectedPaymentMethod,
+          items: paymentMethods
+              .map((method) => DropdownMenuItem(
+                    value: method,
+                    child: Text(method),
+                  ))
+              .toList(),
+          onChanged: (value) {
+            if (value != null) {
+              // setState(() {
+              selectedPaymentMethod = value;
+              // });
+            }
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          ),
+        ),
+      ],
+    ),
+  );
 }
