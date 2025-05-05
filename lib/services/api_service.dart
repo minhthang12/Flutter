@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop/models/cart_response.dart';
+import 'package:shop/models/customer.dart';
 import 'package:shop/tokenStorage/token_storage.dart';
 import '../models/product.dart';
 import '../models/category.dart';
+import '../models/order.dart';
 
 class ApiService {
   static const String _baseUrl = "http://localhost:8080";
@@ -175,5 +177,66 @@ class ApiService {
       body: jsonEncode(cartResponse.toJson()),
     );
     return response;
+  }
+
+  static Future<Customer> getCustomer() async {
+    final token = await TokenStorage.getToken();
+    final url = Uri.parse('$_baseUrl/customer/');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return Customer.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to load customer: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<Order>> getUserOrder() async {
+    final token = await TokenStorage.getToken();
+    final url = Uri.parse('$_baseUrl/order/user');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      return jsonData.map((e) => Order.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load user orders: ${response.statusCode}');
+    }
+  }
+
+  static Future<List<Order>> getOrdersByStatus(String status) async {
+    final token = await TokenStorage.getToken();
+    final url = Uri.parse('$_baseUrl/order/user/status?status=$status');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      return jsonData.map((e) => Order.fromJson(e)).toList();
+    } else {
+      throw Exception(
+          'Failed to load orders by status: ${response.statusCode}');
+    }
   }
 }

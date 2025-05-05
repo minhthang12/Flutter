@@ -9,7 +9,6 @@ class ProfileCard extends StatelessWidget {
     super.key,
     required this.name,
     required this.email,
-    required this.imageSrc,
     this.proLableText = "Pro",
     this.isPro = false,
     this.press,
@@ -17,7 +16,7 @@ class ProfileCard extends StatelessWidget {
     this.isShowArrow = true,
   });
 
-  final String name, email, imageSrc;
+  final String name, email;
   final String proLableText;
   final bool isPro, isShowHi, isShowArrow;
   final VoidCallback? press;
@@ -26,13 +25,13 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: press,
-      leading: CircleAvatar(
-        radius: 28,
-        child: NetworkImageWithLoader(
-          imageSrc,
-          radius: 100,
-        ),
-      ),
+      // leading: CircleAvatar(
+      //   radius: 28,
+      //   child: NetworkImageWithLoader(
+      //     imageSrc?,
+      //     radius: 100,
+      //   ),
+      // ),
       title: Row(
         children: [
           Text(

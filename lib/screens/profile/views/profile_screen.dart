@@ -3,14 +3,39 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shop/components/list_tile/divider_list_tile.dart';
 import 'package:shop/components/network_image_with_loader.dart';
 import 'package:shop/constants.dart';
+import 'package:shop/models/customer.dart';
 import 'package:shop/route/screen_export.dart';
+import 'package:shop/services/api_service.dart';
 import 'package:shop/tokenStorage/token_storage.dart';
 
 import 'components/profile_card.dart';
 import 'components/profile_menu_item_list_tile.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Customer? customer;
+  @override
+  void initState() {
+    super.initState();
+    loadCustomer();
+  }
+
+  void loadCustomer() async {
+    final result = await ApiService.getCustomer();
+      print('Customer loaded: ${result}');
+
+    setState(() {
+      customer = result;
+    });
+      print(customer);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +43,9 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         children: [
           ProfileCard(
-            name: "Sepide",
-            email: "theflutterway@gmail.com",
-            imageSrc: "https://i.imgur.com/IXnwbLk.png",
+            name: customer == null ? "" : customer!.name,
+            email: customer == null ? "" :customer!.email,
+            // imageSrc: "https://i.imgur.com/IXnwbLk.png",
             // proLableText: "Sliver",
             // isPro: true, if the user is pro
             press: () {
@@ -47,27 +72,27 @@ class ProfileScreen extends StatelessWidget {
             svgSrc: "assets/icons/Wishlist.svg",
             press: () {},
           ),
-          ProfileMenuListTile(
-            text: "Addresses",
-            svgSrc: "assets/icons/Address.svg",
-            press: () {
-              Navigator.pushNamed(context, addressesScreenRoute);
-            },
-          ),
-          ProfileMenuListTile(
-            text: "Payment",
-            svgSrc: "assets/icons/card.svg",
-            press: () {
-              Navigator.pushNamed(context, emptyPaymentScreenRoute);
-            },
-          ),
-          ProfileMenuListTile(
-            text: "Wallet",
-            svgSrc: "assets/icons/Wallet.svg",
-            press: () {
-              Navigator.pushNamed(context, walletScreenRoute);
-            },
-          ),
+          // ProfileMenuListTile(
+          //   text: "Addresses",
+          //   svgSrc: "assets/icons/Address.svg",
+          //   press: () {
+          //     Navigator.pushNamed(context, addressesScreenRoute);
+          //   },
+          // ),
+          // ProfileMenuListTile(
+          //   text: "Payment",
+          //   svgSrc: "assets/icons/card.svg",
+          //   press: () {
+          //     Navigator.pushNamed(context, emptyPaymentScreenRoute);
+          //   },
+          // ),
+          // ProfileMenuListTile(
+          //   text: "Wallet",
+          //   svgSrc: "assets/icons/Wallet.svg",
+          //   press: () {
+          //     Navigator.pushNamed(context, walletScreenRoute);
+          //   },
+          // ),
 
           // const SizedBox(height: defaultPadding),
           // Padding(

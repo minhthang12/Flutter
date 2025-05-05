@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:shop/models/customer.dart';
+import 'package:shop/services/api_service.dart';
 
-class UserInfoScreen extends StatelessWidget {
+class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({super.key});
+  @override
+  State<UserInfoScreen> createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
+  Customer? customer;
+  @override
+  void initState() {
+    super.initState();
+    loadCustomer();
+  }
+
+  void loadCustomer() async {
+    final result = await ApiService.getCustomer();
+    print('Customer loaded: ${result}');
+
+    setState(() {
+      customer = result;
+    });
+    print(customer);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +55,18 @@ class UserInfoScreen extends StatelessWidget {
             // Avatar & Name
             Row(
               children: [
-                const CircleAvatar(
-                  radius: 35,
-                  backgroundImage: AssetImage('assets/avatar.png'), // Replace with real image
-                ),
                 const SizedBox(width: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Sepide Moqadasi',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      customer!.name,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
-                      'Sepide@piqo.design',
+                      customer!.email,
                       style: TextStyle(color: Colors.grey),
                     ),
                   ],
@@ -56,11 +76,11 @@ class UserInfoScreen extends StatelessWidget {
             const SizedBox(height: 30),
 
             // Profile fields
-            const ProfileField(label: 'Name', value: 'Sepide'),
-            const ProfileField(label: 'Date of birth', value: 'Oct 31, 1997'),
-            const ProfileField(label: 'Phone number', value: '+1–202–555–0162'),
-            const ProfileField(label: 'Gender', value: 'Female'),
-            const ProfileField(label: 'Email', value: 'Sepide@piqo.design'),
+            ProfileField(label: 'Display Name', value: customer!.name),
+            ProfileField(label: 'Phone number', value: customer!.phone),
+            ProfileField(label: 'Email', value: customer!.email),
+            ProfileField(label: 'User Name', value: customer!.username),
+            ProfileField(label: 'Role', value: customer!.role),
             const ProfileField(
               label: 'Password',
               value: 'Change Password',

@@ -1,7 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:shop/models/order.dart';
+import 'package:shop/services/api_service.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
+
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
+  List<Order> order = [];
+  @override
+  void initState() {
+    super.initState();
+    loadOrder();
+  }
+
+  void loadOrder() async {
+    final result = await ApiService.getUserOrder();
+    setState(() {
+      order = result;
+    });
+  }
+
+  List<Order> getFilteredOrders(String status) {
+    return order.where((o) => o.status == status).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,53 +46,54 @@ class OrdersScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Search Box
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                suffixIcon: const Icon(Icons.tune, color: Colors.grey),
-                hintText: 'Find an order...',
-                filled: true,
-                fillColor: const Color(0xFFF8F8F8),
-                contentPadding: const EdgeInsets.symmetric(vertical: 15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
+            // TextField(
+            //   decoration: InputDecoration(
+            //     prefixIcon: const Icon(Icons.search, color: Colors.grey),
+            //     suffixIcon: const Icon(Icons.tune, color: Colors.grey),
+            //     hintText: 'Find an order...',
+            //     filled: true,
+            //     fillColor: const Color(0xFFF8F8F8),
+            //     contentPadding: const EdgeInsets.symmetric(vertical: 15),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(15),
+            //       borderSide: BorderSide.none,
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 30),
 
-            const Text("Orders history", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            const Text("Orders history",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
             const SizedBox(height: 15),
 
             OrderItem(
               icon: Icons.account_balance_wallet_outlined,
-              label: 'Awaiting Payment',
-              count: 0,
+              label: 'Pending',
+              count: getFilteredOrders("PENDING").length,
               color: Colors.amber,
             ),
             OrderItem(
               icon: Icons.inventory_2_outlined,
-              label: 'Processing',
-              count: 1,
+              label: 'Confirmed',
+              count: getFilteredOrders("CONFIRMED").length,
               color: Colors.lightBlue,
             ),
             OrderItem(
               icon: Icons.local_shipping_outlined,
-              label: 'Delivered',
-              count: 5,
+              label: 'Shipped',
+              count: getFilteredOrders("SHIPPED").length,
               color: Colors.lightBlue,
             ),
             OrderItem(
               icon: Icons.shopping_cart_checkout_outlined,
-              label: 'Returned',
-              count: 3,
+              label: 'Delivered',
+              count: getFilteredOrders("DELIVERED").length,
               color: Colors.lightBlue,
             ),
             OrderItem(
               icon: Icons.cancel_outlined,
               label: 'Canceled',
-              count: 2,
+              count: getFilteredOrders("CANCELLED").length,
               color: Colors.redAccent,
             ),
           ],
@@ -103,14 +129,16 @@ class OrderItem extends StatelessWidget {
             children: [
               if (count > 0 || label == 'Awaiting Payment')
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: color,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     count.toString(),
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               const SizedBox(width: 10),
