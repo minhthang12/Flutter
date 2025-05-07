@@ -59,3 +59,7 @@ flutter:
           weight: 700
         - asset: assets/fonts/grandis_extended/GrandisExtended-Black.ttf
           weight: 900
+    - family: Times New Roman
+      fonts:
+        - asset: assets/fonts/times.ttf
+          weight: 700

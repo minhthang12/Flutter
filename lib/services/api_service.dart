@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop/models/cart_response.dart';
 import 'package:shop/models/customer.dart';
+import 'package:shop/models/order_item.dart';
+import 'package:shop/route/screen_export.dart';
 import 'package:shop/tokenStorage/token_storage.dart';
 import '../models/product.dart';
 import '../models/category.dart';
@@ -219,21 +221,23 @@ class ApiService {
     }
   }
 
-  static Future<List<Order>> getOrdersByStatus(String status) async {
+  static Future<List<OrderDetailsItem>> getOrdersByStatus(String status) async {
     final token = await TokenStorage.getToken();
-    final url = Uri.parse('$_baseUrl/order/user/status?status=$status');
+    final url = Uri.parse('$_baseUrl/orderdetails/status?status=$status');
 
     final response = await http.get(
       url,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8', // Thêm charset=utf-8
         if (token != null) 'Authorization': 'Bearer $token',
       },
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonData = json.decode(response.body);
-      return jsonData.map((e) => Order.fromJson(e)).toList();
+      final List<dynamic> jsonData =
+          jsonDecode(utf8.decode(response.bodyBytes));
+
+      return jsonData.map((e) => OrderDetailsItem.fromJson(e)).toList();
     } else {
       throw Exception(
           'Failed to load orders by status: ${response.statusCode}');

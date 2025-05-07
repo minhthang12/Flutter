@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop/models/order.dart';
 import 'package:shop/services/api_service.dart';
+import 'package:shop/route/screen_export.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -71,30 +72,65 @@ class _OrdersScreenState extends State<OrdersScreen> {
               label: 'Pending',
               count: getFilteredOrders("PENDING").length,
               color: Colors.amber,
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  orderDetailsScreenRoute,
+                  arguments: "PENDING",
+                );
+              },
             ),
             OrderItem(
               icon: Icons.inventory_2_outlined,
               label: 'Confirmed',
               count: getFilteredOrders("CONFIRMED").length,
               color: Colors.lightBlue,
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  orderDetailsScreenRoute,
+                  arguments: "CONFIRMED",
+                );
+              },
             ),
             OrderItem(
               icon: Icons.local_shipping_outlined,
               label: 'Shipped',
               count: getFilteredOrders("SHIPPED").length,
               color: Colors.lightBlue,
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  orderDetailsScreenRoute,
+                  arguments: "SHIPPED",
+                );
+              },
             ),
             OrderItem(
               icon: Icons.shopping_cart_checkout_outlined,
               label: 'Delivered',
               count: getFilteredOrders("DELIVERED").length,
               color: Colors.lightBlue,
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  orderDetailsScreenRoute,
+                  arguments: "DELIVERED",
+                );
+              },
             ),
             OrderItem(
               icon: Icons.cancel_outlined,
               label: 'Canceled',
               count: getFilteredOrders("CANCELLED").length,
               color: Colors.redAccent,
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  orderDetailsScreenRoute,
+                  arguments: "CANCELLED",
+                );
+              },
             ),
           ],
         ),
@@ -108,6 +144,7 @@ class OrderItem extends StatelessWidget {
   final String label;
   final int count;
   final Color color;
+  final VoidCallback onPressed;
 
   const OrderItem({
     super.key,
@@ -115,19 +152,25 @@ class OrderItem extends StatelessWidget {
     required this.label,
     required this.count,
     required this.color,
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          leading: Icon(icon, color: Colors.black),
-          title: Text(label, style: const TextStyle(fontSize: 15)),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (count > 0 || label == 'Awaiting Payment')
+        TextButton(
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            padding: EdgeInsets.zero, // Remove default padding
+          ),
+          child: ListTile(
+            leading: Icon(icon, color: Colors.black),
+            title: Text(label, style: const TextStyle(fontSize: 15)),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -141,9 +184,10 @@ class OrderItem extends StatelessWidget {
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
-              const SizedBox(width: 10),
-              const Icon(Icons.chevron_right, color: Colors.grey),
-            ],
+                const SizedBox(width: 10),
+                const Icon(Icons.chevron_right, color: Colors.grey),
+              ],
+            ),
           ),
         ),
         const Divider(height: 1),

@@ -128,17 +128,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return MaterialPageRoute(
     //     builder: (context) => const SetupFaceIdScreen(),
     //   );
-case productDetailsScreenRoute:
-  final args = settings.arguments as Map<String, dynamic>;
-  final productId = args['productId'] as int;
-  final isProductAvailable = args['isProductAvailable'] as bool? ?? true;
+    case productDetailsScreenRoute:
+      final args = settings.arguments as Map<String, dynamic>;
+      final productId = args['productId'] as int;
+      final isProductAvailable = args['isProductAvailable'] as bool? ?? true;
 
-  return MaterialPageRoute(
-    builder: (context) => ProductDetailsScreen(
-      productId: productId,
-      isProductAvailable: isProductAvailable,
-    ),
-  );
+      return MaterialPageRoute(
+        builder: (context) => ProductDetailsScreen(
+          productId: productId,
+          isProductAvailable: isProductAvailable,
+        ),
+      );
 
     case productReviewsScreenRoute:
       return MaterialPageRoute(
@@ -256,10 +256,12 @@ case productDetailsScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const OrderProcessingScreen(),
     //   );
-    // case orderDetailsScreenRoute:
-    //   return MaterialPageRoute(
-    //     builder: (context) => const OrderDetailsScreen(),
-    //   );
+    case orderDetailsScreenRoute:
+      final status = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (context) => OrderDetailsScreen(status: status),
+      );
+
     // case cancleOrderScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const CancleOrderScreen(),
