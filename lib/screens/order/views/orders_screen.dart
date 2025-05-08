@@ -34,7 +34,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: const Text('Orders', style: TextStyle(color: Colors.black)),
+        title: const Text('Đơn hàng', style: TextStyle(color: Colors.black)),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -63,13 +63,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
             // ),
             // const SizedBox(height: 30),
 
-            const Text("Orders history",
+            const Text("Lịch sử đơn hàng",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
             const SizedBox(height: 15),
 
             OrderItem(
               icon: Icons.account_balance_wallet_outlined,
-              label: 'Pending',
+              label: 'Đang chờ xử lý',
               count: getFilteredOrders("PENDING").length,
               color: Colors.amber,
               onPressed: () {
@@ -82,7 +82,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ),
             OrderItem(
               icon: Icons.inventory_2_outlined,
-              label: 'Confirmed',
+              label: 'Đã xác nhận',
               count: getFilteredOrders("CONFIRMED").length,
               color: Colors.lightBlue,
               onPressed: () {
@@ -95,7 +95,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ),
             OrderItem(
               icon: Icons.local_shipping_outlined,
-              label: 'Shipped',
+              label: 'Đang vận chuyển',
               count: getFilteredOrders("SHIPPED").length,
               color: Colors.lightBlue,
               onPressed: () {
@@ -108,7 +108,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ),
             OrderItem(
               icon: Icons.shopping_cart_checkout_outlined,
-              label: 'Delivered',
+              label: 'Đã vận chuyển',
               count: getFilteredOrders("DELIVERED").length,
               color: Colors.lightBlue,
               onPressed: () {
@@ -121,7 +121,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ),
             OrderItem(
               icon: Icons.cancel_outlined,
-              label: 'Canceled',
+              label: 'Đã hủy',
               count: getFilteredOrders("CANCELLED").length,
               color: Colors.redAccent,
               onPressed: () {

@@ -22,7 +22,7 @@ class AddedToCartMessageScreen extends StatelessWidget {
               ),
               const Spacer(flex: 2),
               Text(
-                "Added to cart",
+                "Thêm vào giỏ hàng",
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall!
@@ -30,7 +30,7 @@ class AddedToCartMessageScreen extends StatelessWidget {
               ),
               const SizedBox(height: defaultPadding / 2),
               const Text(
-                "Click the checkout button to complete the purchase process.",
+                "Nhấp vào nút thanh toán để hoàn tất quá trình mua hàng.",
                 textAlign: TextAlign.center,
               ),
               const Spacer(flex: 2),
@@ -38,14 +38,14 @@ class AddedToCartMessageScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text("Continue shopping"),
+                child: const Text("Tiếp tục mua hàng"),
               ),
               const SizedBox(height: defaultPadding),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, cartScreenRoute);
                 },
-                child: const Text("Checkout"),
+                child: const Text("Thanh toán"),
               ),
               const Spacer(),
             ],

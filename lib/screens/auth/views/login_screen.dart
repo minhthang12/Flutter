@@ -76,13 +76,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Welcome back!",
+                    "Chào mừng bạn đã đến với cửa hàng",
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: defaultPadding / 2),
-                  const Text(
-                    "Log in with your data that you intered during your registration.",
-                  ),
+                  const Text("Đăng nhập bằng thông tin bạn đã đăng kí"),
                   const SizedBox(height: defaultPadding),
                   LogInForm(
                     formKey: _formKey,
@@ -91,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Align(
                     child: TextButton(
-                      child: const Text("Forgot password"),
+                      child: const Text("Quên mật khẩu"),
                       onPressed: () {
                         Navigator.pushNamed(
                             context, passwordRecoveryScreenRoute);
@@ -113,17 +111,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         handleLogin();
                       }
                     },
-                    child: const Text("Log in"),
+                    child: const Text("Đăng nhập"),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Don't have an account?"),
+                      const Text("Chưa có tài khoản?"),
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, signUpScreenRoute);
                         },
-                        child: const Text("Sign up"),
+                        child: const Text("Đăng kí"),
                       )
                     ],
                   ),

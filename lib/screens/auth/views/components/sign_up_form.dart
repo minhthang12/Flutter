@@ -33,7 +33,7 @@ class SignUpForm extends StatelessWidget {
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.name,
             decoration: InputDecoration(
-              hintText: "Name",
+              hintText: "Nhập tên đăng nhập",
               prefixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
@@ -66,7 +66,7 @@ class SignUpForm extends StatelessWidget {
             ],
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              hintText: "Phone Number",
+              hintText: "Nhập số điện thoại",
               prefixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
@@ -96,7 +96,7 @@ class SignUpForm extends StatelessWidget {
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              hintText: "Email Address",
+              hintText: "Nhập địa chỉ email",
               prefixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
@@ -125,7 +125,7 @@ class SignUpForm extends StatelessWidget {
             validator: passwordValidator.call,
             obscureText: true,
             decoration: InputDecoration(
-              hintText: "Password",
+              hintText: "Nhập mật khẩu",
               prefixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),

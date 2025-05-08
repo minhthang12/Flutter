@@ -63,7 +63,7 @@ class ProductInfo extends StatelessWidget {
             ),
             const SizedBox(height: defaultPadding),
             Text(
-              "Product info",
+              "Thông tin sản phẩm",
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!

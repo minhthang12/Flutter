@@ -69,8 +69,8 @@ class _ProductBuyNowScreenState extends State<ProductBuyNowScreen> {
     return Scaffold(
       bottomNavigationBar: CartButton(
         price: totalPrice(),
-        title: "Add to cart",
-        subTitle: "Total price",
+        title: "Thêm vào giỏ hàng",
+        subTitle: "Tổng tiền",
         press: () {
           addToCard();
           customModalBottomSheet(

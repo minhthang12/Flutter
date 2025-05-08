@@ -15,7 +15,7 @@ class _EntryPointState extends State<EntryPoint> {
   final List _pages = const [
     HomeScreen(),
     // DiscoverScreen(),
-    BookmarkScreen(),
+    // BookmarkScreen(),
     // EmptyCartScreen(), // if Cart is empty
     CartScreen(),
     ProfileScreen(),
@@ -67,7 +67,7 @@ class _EntryPointState extends State<EntryPoint> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, notificationsScreenRoute);
+              // Navigator.pushNamed(context, notificationsScreenRoute);
             },
             icon: SvgPicture.asset(
               "assets/icons/Notification.svg",
@@ -117,7 +117,7 @@ class _EntryPointState extends State<EntryPoint> {
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Shop.svg"),
               activeIcon: svgIcon("assets/icons/Shop.svg", color: primaryColor),
-              label: "Shop",
+              label: "Trang chủ",
             ),
             // BottomNavigationBarItem(
             //   icon: svgIcon("assets/icons/Category.svg"),
@@ -125,22 +125,22 @@ class _EntryPointState extends State<EntryPoint> {
             //       svgIcon("assets/icons/Category.svg", color: primaryColor),
             //   label: "Discover",
             // ),
-            BottomNavigationBarItem(
-              icon: svgIcon("assets/icons/Bookmark.svg"),
-              activeIcon:
-                  svgIcon("assets/icons/Bookmark.svg", color: primaryColor),
-              label: "Bookmark",
-            ),
+            // BottomNavigationBarItem(
+            //   icon: svgIcon("assets/icons/Bookmark.svg"),
+            //   activeIcon:
+            //       svgIcon("assets/icons/Bookmark.svg", color: primaryColor),
+            //   label: "Yêu thích",
+            // ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Bag.svg"),
               activeIcon: svgIcon("assets/icons/Bag.svg", color: primaryColor),
-              label: "Cart",
+              label: "Giỏ hàng",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Profile.svg"),
               activeIcon:
                   svgIcon("assets/icons/Profile.svg", color: primaryColor),
-              label: "Profile",
+              label: "Trang cá nhân",
             ),
           ],
         ),

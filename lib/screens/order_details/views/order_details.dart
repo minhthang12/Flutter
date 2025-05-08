@@ -54,7 +54,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Delivered"),
+          title: const Text(""),
           leading: const BackButton(),
         ),
         body: ListView.builder(

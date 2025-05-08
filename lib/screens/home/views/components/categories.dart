@@ -23,7 +23,6 @@ class _CategoriesState extends State<Categories> {
   void initState() {
     super.initState();
     loadCategories();
-    
   }
 
   Future<void> loadCategories() async {
@@ -31,7 +30,7 @@ class _CategoriesState extends State<Categories> {
       final data = await ApiService.fetchCategories();
       setState(() {
         categories = [
-          categoryModel.Category(id: 0, categoryName: "All Categories"),
+          categoryModel.Category(id: 0, categoryName: "Tất cả"),
           ...data
         ];
         isLoading = false;

@@ -76,13 +76,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             const SizedBox(height: 30),
 
             // Profile fields
-            ProfileField(label: 'Display Name', value: customer!.name),
-            ProfileField(label: 'Phone number', value: customer!.phone),
+            ProfileField(label: 'Tên hiển thị', value: customer!.name),
+            ProfileField(label: 'Số điện thoại', value: customer!.phone),
             ProfileField(label: 'Email', value: customer!.email),
-            ProfileField(label: 'User Name', value: customer!.username),
-            ProfileField(label: 'Role', value: customer!.role),
+            ProfileField(label: 'Tên đăng nhập', value: customer!.username),
+            ProfileField(label: 'Vai trò', value: customer!.role),
             const ProfileField(
-              label: 'Password',
+              label: 'Mật khẩu',
               value: 'Change Password',
               isLink: true,
               linkColor: Colors.deepPurple,

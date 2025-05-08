@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           final product = productList[index];
                           return ProductCard(
                             image: product.pictures,
-                            brandName: "Brand",
+                            brandName: "Sản phẩm",
                             title: product.productName,
                             price: product.price.toDouble(),
                             // priceAfetDiscount: product.price.toDouble(),

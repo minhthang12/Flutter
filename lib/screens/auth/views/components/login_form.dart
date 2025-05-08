@@ -33,7 +33,7 @@ class LogInForm extends StatelessWidget {
             ],
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              hintText: "Phone number",
+              hintText: "Nhập số điện thoại",
               prefixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),
@@ -61,7 +61,7 @@ class LogInForm extends StatelessWidget {
             validator: passwordValidator.call,
             obscureText: true,
             decoration: InputDecoration(
-              hintText: "Password",
+              hintText: "Nhập mật khẩu",
               prefixIcon: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: defaultPadding * 0.75),

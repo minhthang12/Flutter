@@ -78,11 +78,12 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void createOrder() async {
-    if(cart == null || cart!.cartItemDTOList.isEmpty) {
+    if (cart == null || cart!.cartItemDTOList.isEmpty) {
       print("Cart is empty");
       return;
     }
-    final response = await ApiService.createOrder(cart!, addressController.text, selectedPaymentMethod);
+    final response = await ApiService.createOrder(
+        cart!, addressController.text, selectedPaymentMethod);
     if (response.statusCode == 201) {
       print("Order created successfully!");
     } else {
@@ -94,7 +95,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cart"),
+        title: const Text("Giỏ hàng"),
         centerTitle: true,
         // leading: IconButton(
         //   icon: const Icon(Icons.arrow_back),
@@ -111,9 +112,9 @@ class _CartScreenState extends State<CartScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Review your order",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        // const Text("Review your order",
+                        //     style: TextStyle(
+                        //         fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
                         ...cart!.cartItemDTOList.map((item) => Padding(
                               padding: const EdgeInsets.only(bottom: 12),
@@ -138,6 +139,28 @@ class _CartScreenState extends State<CartScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               createOrder();
+                              setState(() {
+                                cart?.cartItemDTOList.clear();
+                              });
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Thành công'),
+                                    content: Text(
+                                        'Đơn hàng của bạn đã được đặt thành công!'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Đóng popup
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepPurple,
@@ -145,7 +168,7 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(16),
                               ),
                             ),
-                            child: const Text("Checkout",
+                            child: const Text("Thanh toán",
                                 style: TextStyle(fontSize: 16)),
                           ),
                         ),
@@ -241,15 +264,15 @@ class _CartScreenState extends State<CartScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Order Summary",
+          const Text("Thông tin đơn hàng",
               style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
-          _summaryRow(
-              "Subtotal", "\$${cart?.totalCost.toStringAsFixed(2) ?? "0.00"}"),
-          _summaryRow("Shipping Fee", "Free", highlight: true),
+          _summaryRow("Tổng đơn hàng",
+              "\$${cart?.totalCost.toStringAsFixed(2) ?? "0.00"}"),
+          _summaryRow("Phí vận chuyển", "Free", highlight: true),
           const Divider(height: 24),
-          _summaryRow("Total (Include of VAT)",
-              "\$${cart?.totalCost.toStringAsFixed(2) ?? "0.00"}",
+          _summaryRow(
+              "Tổng tiền", "\$${cart?.totalCost.toStringAsFixed(2) ?? "0.00"}",
               bold: true),
           // _summaryRow("Estimated VAT", "\$1"),
         ],
@@ -280,12 +303,11 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-TextEditingController addressController =
-    TextEditingController(text: "123 Nguyễn Văn Cừ, Quận 5, TP.HCM");
-String selectedPaymentMethod = "Credit Card";
+TextEditingController addressController = TextEditingController(text: "");
+String selectedPaymentMethod = "Thanh toán khi nhận hàng";
 final List<String> paymentMethods = [
-  "Credit Card",
-  "Cash on Delivery",
+  "Thanh toán khi nhận hàng",
+  "Thẻ ngân hàng",
   "Momo",
   "ZaloPay",
 ];
@@ -307,13 +329,13 @@ Widget _buildAddressSection() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Delivery Address",
+        const Text("Địa chỉ nhận hàng",
             style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         TextField(
           controller: addressController,
           decoration: InputDecoration(
-            hintText: "Enter your delivery address",
+            hintText: "Nhập địa chỉ nhận hàng",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -344,7 +366,7 @@ Widget _buildPaymentMethodSection() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Payment Method",
+        const Text("Phương thức thanh toán",
             style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(

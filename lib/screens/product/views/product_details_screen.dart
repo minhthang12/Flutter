@@ -128,7 +128,7 @@ class _ProductDetailsScreenSate extends State<ProductDetailsScreen> {
               ],
             ),
             ProductInfo(
-              brand: "LIPSY LONDON",
+              brand: "",
               title: products!.productName,
               isAvailable: widget.isProductAvailable,
               description: products!.productDescription,
@@ -140,7 +140,7 @@ class _ProductDetailsScreenSate extends State<ProductDetailsScreen> {
               padding: const EdgeInsets.all(defaultPadding),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  "You may also like",
+                  "Có thể bạn sẽ thích ",
                   style: Theme.of(context).textTheme.titleSmall!,
                 ),
               ),
@@ -165,7 +165,7 @@ class _ProductDetailsScreenSate extends State<ProductDetailsScreen> {
                             child: ProductCard(
                               image: product.pictures,
                               title: product.productName,
-                              brandName: "LIPSY LONDON",
+                              brandName: "",
                               price: product.price.toDouble(),
                               // priceAfetDiscount: product.price.toDouble(),
                               dicountpercent: 0,

@@ -67,23 +67,23 @@ const double defaultBorderRadious = 12.0;
 const Duration defaultDuration = Duration(milliseconds: 300);
 
 final passwordValidator = MultiValidator([
-  RequiredValidator(errorText: 'Password is required'),
+  RequiredValidator(errorText: 'Mật khẩu là bắt buộc'),
   // MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
   // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
   //     errorText: 'passwords must have at least one special character')
 ]);
 
 final phoneValidator = MultiValidator([
-  RequiredValidator(errorText: 'Phone is required'),
+  RequiredValidator(errorText: 'Số điện thoại là bắt buộc'),
   // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
 ]);
 final emailValidator = MultiValidator([
-  RequiredValidator(errorText: 'Email is required'),
+  RequiredValidator(errorText: 'Email là bắt buộc'),
   // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
 ]);
 final nameValidator = MultiValidator([
-  RequiredValidator(errorText: 'Name is required'),
+  RequiredValidator(errorText: 'Tên đăng nhập là bắt buộc'),
   // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
 ]);
 
-const pasNotMatchErrorText = "passwords do not match";
+const pasNotMatchErrorText = "Mật khẩu không khớp";

@@ -38,11 +38,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (response.statusCode == 200) {
       Navigator.pushNamed(context, logInScreenRoute);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Register Success")),
+        const SnackBar(content: Text("Đăng kí thành công")),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Register failed")),
+        const SnackBar(content: Text("Đăng kí thất bại")),
       );
     }
   }
@@ -65,12 +65,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Let’s get started!",
+                    "Bắt đầu đăng kí tài khoản",
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: defaultPadding / 2),
                   const Text(
-                    "Please enter your valid data in order to create an account.",
+                    "Vui lòng nhập dữ liệu hợp lệ để đăng kí tài khoản",
                   ),
                   const SizedBox(height: defaultPadding),
                   SignUpForm(
@@ -122,12 +122,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         handleSignUp();
                       }
                     },
-                    child: const Text("Continue"),
+                    child: const Text("Tiếp tục"),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Do you have an account?"),
+                      const Text("Bạn đã có tài khoản"),
                       TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -135,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                           Navigator.pushNamed(context, logInScreenRoute);
                         },
-                        child: const Text("Log in"),
+                        child: const Text("Đăng nhập"),
                       )
                     ],
                   ),

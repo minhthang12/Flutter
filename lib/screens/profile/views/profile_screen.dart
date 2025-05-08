@@ -28,13 +28,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void loadCustomer() async {
     final result = await ApiService.getCustomer();
-      print('Customer loaded: ${result}');
+    print('Customer loaded: ${result}');
 
     setState(() {
       customer = result;
     });
-      print(customer);
-
+    print(customer);
   }
 
   @override
@@ -44,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           ProfileCard(
             name: customer == null ? "" : customer!.name,
-            email: customer == null ? "" :customer!.email,
+            email: customer == null ? "" : customer!.email,
             // imageSrc: "https://i.imgur.com/IXnwbLk.png",
             // proLableText: "Sliver",
             // isPro: true, if the user is pro
@@ -55,23 +54,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: Text(
-              "Account",
+              "Tài khoản",
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
           const SizedBox(height: defaultPadding / 2),
           ProfileMenuListTile(
-            text: "Orders",
+            text: "Đơn hàng",
             svgSrc: "assets/icons/Order.svg",
             press: () {
               Navigator.pushNamed(context, ordersScreenRoute);
             },
           ),
-          ProfileMenuListTile(
-            text: "Wishlist",
-            svgSrc: "assets/icons/Wishlist.svg",
-            press: () {},
-          ),
+          // ProfileMenuListTile(
+          //   text: "Danh sách yêu thích",
+          //   svgSrc: "assets/icons/Wishlist.svg",
+          //   press: () {},
+          // ),
           // ProfileMenuListTile(
           //   text: "Addresses",
           //   svgSrc: "assets/icons/Address.svg",
@@ -156,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             title: const Text(
-              "Log Out",
+              "Đăng xuất",
               style: TextStyle(color: errorColor, fontSize: 14, height: 1),
             ),
           )

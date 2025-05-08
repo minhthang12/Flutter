@@ -257,4 +257,25 @@ class ApiService {
           'Failed to load orders by status: ${response.statusCode}');
     }
   }
+
+  static Future<List<Product>> searchProductByName(String productName) async {
+    final token = await TokenStorage.getToken();
+    final url = Uri.parse('$_baseUrl/product/search?product_name=$productName');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Decode the response body
+      final List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+      return body.map((json) => Product.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to search products: ${response.statusCode}');
+    }
+  }
 }

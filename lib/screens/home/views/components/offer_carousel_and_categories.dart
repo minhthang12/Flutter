@@ -6,7 +6,7 @@ import 'offers_carousel.dart';
 import 'package:shop/models/product.dart';
 
 class OffersCarouselAndCategories extends StatelessWidget {
-    final Function(List<Product>) onCategorySelected;
+  final Function(List<Product>) onCategorySelected;
   const OffersCarouselAndCategories({
     super.key,
     required this.onCategorySelected,
@@ -24,7 +24,7 @@ class OffersCarouselAndCategories extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(defaultPadding),
           child: Text(
-            "Categories",
+            "Danh mục sản phẩm",
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
