@@ -72,37 +72,32 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Order info
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text("",
-                    //         style:
-                    //             const TextStyle(fontFamily: 'Times New Roman')),
-                    //     const Icon(Icons.chevron_right),
-                    //   ],
-                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(orderItem.product.productName,
+                            style:
+                                const TextStyle(fontFamily: 'Times New Roman')),
+                        const Icon(Icons.chevron_right),
+                      ],
+                    ),
                     // const SizedBox(height: 4),
                     // Text(orderItem.order.address),
                     const SizedBox(height: 16),
                     // Timeline (you can update based on your needs)
                     StepStatusTimeline(
                       steps: steps,
-                      currentStep: getStepFromStatus(orderItem.order.status!)-1,
+                      currentStep:
+                          getStepFromStatus(orderItem.order.status!) - 1,
                     ),
                     const SizedBox(height: 16),
-                    ...List.generate(orderItem.product.length, (i) {
-                      final product = orderItem.product[i];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: _buildProductItem(
-                          productName: product.productName,
-                          price: product.price,
-                          imageUrl: product.pictures,
-                          orderStatus: orderItem.order.status!,
-                          quantity: orderItem.quantity,
-                        ),
-                      );
-                    }),
+                    // child: _buildProductItem(
+                    //   productName: product.productName,
+                    //   price: product.price,
+                    //   imageUrl: product.pictures,
+                    //   orderStatus: orderItem.order.status!,
+                    //   quantity: orderItem.quantity,
+                    // ),
                   ],
                 ),
               ),

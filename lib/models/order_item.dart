@@ -4,7 +4,7 @@ import 'package:shop/models/product.dart';
 class OrderDetailsItem {
   final int id;
   final Order order;
-  final List<Product> product;  // List of products, assuming multiple products
+  final Product product; // Chỉ 1 product
   final int productTotalMoney;
   final int quantity;
 
@@ -17,19 +17,10 @@ class OrderDetailsItem {
   });
 
   factory OrderDetailsItem.fromJson(Map<String, dynamic> json) {
-    List<Product> productList = [];
-    if (json['product'] is List) {
-      productList = (json['product'] as List)
-          .map((productJson) => Product.fromJson(productJson))
-          .toList();
-    } else if (json['product'] is Map) {
-      productList = [Product.fromJson(json['product'])];
-    }
-
     return OrderDetailsItem(
       id: json['id'],
       order: Order.fromJson(json['order']),
-      product: productList,  // Use the product list
+      product: Product.fromJson(json['product']), // Là object, không phải List
       productTotalMoney: json['product_total_money'],
       quantity: json['quantity'],
     );

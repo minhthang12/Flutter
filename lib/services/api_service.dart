@@ -223,12 +223,12 @@ class ApiService {
 
   static Future<List<OrderDetailsItem>> getOrdersByStatus(String status) async {
     final token = await TokenStorage.getToken();
-    final url = Uri.parse('$_baseUrl/orderdetails/status?status=$status');
+    final url = Uri.parse('$_baseUrl/order/status?status=$status');
 
     final response = await http.get(
       url,
       headers: {
-        'Content-Type': 'application/json; charset=utf-8', // Thêm charset=utf-8
+        'Content-Type': 'application/json; charset=utf-8',
         if (token != null) 'Authorization': 'Bearer $token',
       },
     );
@@ -237,7 +237,21 @@ class ApiService {
       final List<dynamic> jsonData =
           jsonDecode(utf8.decode(response.bodyBytes));
 
-      return jsonData.map((e) => OrderDetailsItem.fromJson(e)).toList();
+      List<OrderDetailsItem> result = [];
+
+      for (var orderJson in jsonData) {
+        final order = Order.fromJson(orderJson);
+
+        final orderDetails = orderJson['orderDetails'] as List<dynamic>;
+        for (var detailJson in orderDetails) {
+          result.add(OrderDetailsItem.fromJson({
+            ...detailJson,
+            'order': orderJson, // Inject order info into each item
+          }));
+        }
+      }
+
+      return result;
     } else {
       throw Exception(
           'Failed to load orders by status: ${response.statusCode}');
