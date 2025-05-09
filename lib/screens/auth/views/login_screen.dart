@@ -7,6 +7,7 @@ import 'package:shop/tokenStorage/token_storage.dart';
 
 import 'components/login_form.dart';
 
+//man hinh dang nhap
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -32,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     checkTokenExpired();
   }
 
+// check token còn thời hạn hay không
   void checkTokenExpired() async {
     final token = await TokenStorage.getToken();
     final isExpired = await TokenStorage.isTokenExpired(token!);
@@ -43,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+// api login : check thông tin nếu không đúng thì không được đăng nhập
   void handleLogin() async {
     final response = await ApiService.loginUser(
         int.parse(phoneController.text), passwordController.text);

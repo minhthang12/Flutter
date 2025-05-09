@@ -221,9 +221,9 @@ class ApiService {
     }
   }
 
-  static Future<List<OrderDetailsItem>> getOrdersByStatus(String status) async {
+  static Future<List<Order>> getOrdersByStatus(String status) async {
     final token = await TokenStorage.getToken();
-    final url = Uri.parse('$_baseUrl/order/status?status=$status');
+    final url = Uri.parse('$_baseUrl/order/user/status?status=$status');
 
     final response = await http.get(
       url,
@@ -237,21 +237,7 @@ class ApiService {
       final List<dynamic> jsonData =
           jsonDecode(utf8.decode(response.bodyBytes));
 
-      List<OrderDetailsItem> result = [];
-
-      for (var orderJson in jsonData) {
-        final order = Order.fromJson(orderJson);
-
-        final orderDetails = orderJson['orderDetails'] as List<dynamic>;
-        for (var detailJson in orderDetails) {
-          result.add(OrderDetailsItem.fromJson({
-            ...detailJson,
-            'order': orderJson, // Inject order info into each item
-          }));
-        }
-      }
-
-      return result;
+      return jsonData.map((item) => Order.fromJson(item)).toList();
     } else {
       throw Exception(
           'Failed to load orders by status: ${response.statusCode}');

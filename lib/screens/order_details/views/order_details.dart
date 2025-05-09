@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/models/order.dart';
 import 'package:shop/models/order_item.dart';
 import 'package:shop/services/api_service.dart';
 
@@ -11,7 +12,7 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
-  List<OrderDetailsItem> orders = [];
+  List<Order> orders = [];
 
   @override
   void initState() {
@@ -75,7 +76,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(orderItem.product.productName,
+                        Text(orderItem.address,
                             style:
                                 const TextStyle(fontFamily: 'Times New Roman')),
                         const Icon(Icons.chevron_right),
@@ -87,8 +88,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     // Timeline (you can update based on your needs)
                     StepStatusTimeline(
                       steps: steps,
-                      currentStep:
-                          getStepFromStatus(orderItem.order.status!) - 1,
+                      currentStep: getStepFromStatus(orderItem.status!) - 1,
                     ),
                     const SizedBox(height: 16),
                     // child: _buildProductItem(
