@@ -86,6 +86,9 @@ class _CartScreenState extends State<CartScreen> {
         cart!, addressController.text, selectedPaymentMethod);
     if (response.statusCode == 201) {
       print("Order created successfully!");
+      setState(() {
+        cart?.cartItemDTOList.clear();
+      });
     } else {
       print("Failed to create order: ${response.statusCode}");
     }
@@ -139,9 +142,6 @@ class _CartScreenState extends State<CartScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               createOrder();
-                              setState(() {
-                                cart?.cartItemDTOList.clear();
-                              });
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

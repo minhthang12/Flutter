@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shop/models/order.dart';
-import 'package:shop/models/order_item.dart';
 import 'package:shop/services/api_service.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
@@ -55,7 +54,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(""),
+          title: Text(widget.status),
           leading: const BackButton(),
         ),
         body: ListView.builder(
@@ -82,22 +81,31 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         const Icon(Icons.chevron_right),
                       ],
                     ),
-                    // const SizedBox(height: 4),
-                    // Text(orderItem.order.address),
                     const SizedBox(height: 16),
-                    // Timeline (you can update based on your needs)
+
+                    // Timeline
                     StepStatusTimeline(
                       steps: steps,
                       currentStep: getStepFromStatus(orderItem.status!) - 1,
                     ),
                     const SizedBox(height: 16),
-                    // child: _buildProductItem(
-                    //   productName: product.productName,
-                    //   price: product.price,
-                    //   imageUrl: product.pictures,
-                    //   orderStatus: orderItem.order.status!,
-                    //   quantity: orderItem.quantity,
-                    // ),
+                    // Hiển thị danh sách sản phẩm
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: orderItem.orderDetailsItems.length,
+                      itemBuilder: (context, productIndex) {
+                        final product =
+                            orderItem.orderDetailsItems[productIndex];
+                        return _buildProductItem(
+                          productName: product.product.productName,
+                          price: product.product.price,
+                          imageUrl: product.product.pictures,
+                          orderStatus: orderItem.status!,
+                          quantity: product.quantity,
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

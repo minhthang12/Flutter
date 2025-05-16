@@ -94,8 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextButton(
                       child: const Text("Quên mật khẩu"),
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, passwordRecoveryScreenRoute);
+                        // Navigator.pushNamed(
+                        //     context, passwordRecoveryScreenRoute);
                       },
                     ),
                   ),
