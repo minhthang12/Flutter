@@ -68,14 +68,15 @@ const Duration defaultDuration = Duration(milliseconds: 300);
 
 final passwordValidator = MultiValidator([
   RequiredValidator(errorText: 'Mật khẩu là bắt buộc'),
-  // MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
+  MinLengthValidator(6, errorText: 'Mật khẩu tối thiểu phải có 6 ký tự'),
   // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
   //     errorText: 'passwords must have at least one special character')
 ]);
 
 final phoneValidator = MultiValidator([
   RequiredValidator(errorText: 'Số điện thoại là bắt buộc'),
-  // MinLengthValidator(10,errorText: "Phone number must be at least 10 digits"),
+  PatternValidator(r'^0\d{9}$',
+      errorText: 'Số điện thoại phải gồm 10 chữ số và bắt đầu bằng 0'),
 ]);
 final emailValidator = MultiValidator([
   RequiredValidator(errorText: 'Email là bắt buộc'),

@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ModalRoute.withName(logInScreenRoute));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Login failed")),
+        const SnackBar(content: Text("Login thất bại. Vui lòng kiểm tra lại")),
       );
     }
   }

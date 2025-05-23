@@ -78,8 +78,17 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void createOrder() async {
+    if (addressController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Vui lòng nhập địa chỉ trước khi thanh toán")),
+      );
+      return;
+    }
     if (cart == null || cart!.cartItemDTOList.isEmpty) {
-      print("Cart is empty");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Giỏ hàng đang trống")),
+      );
       return;
     }
     final response = await ApiService.createOrder(
@@ -89,6 +98,23 @@ class _CartScreenState extends State<CartScreen> {
       setState(() {
         cart?.cartItemDTOList.clear();
       });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Thành công'),
+            content: Text('Đơn hàng của bạn đã được đặt thành công!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Đóng popup
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     } else {
       print("Failed to create order: ${response.statusCode}");
     }
@@ -142,25 +168,6 @@ class _CartScreenState extends State<CartScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               createOrder();
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Thành công'),
-                                    content: Text(
-                                        'Đơn hàng của bạn đã được đặt thành công!'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Đóng popup
-                                        },
-                                        child: Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepPurple,
@@ -269,7 +276,7 @@ class _CartScreenState extends State<CartScreen> {
           const SizedBox(height: 12),
           _summaryRow("Tổng đơn hàng",
               "\$${cart?.totalCost.toStringAsFixed(2) ?? "0.00"}"),
-          _summaryRow("Phí vận chuyển", "Free", highlight: true),
+          _summaryRow("Phí vận chuyển", "Miễn phí", highlight: true),
           const Divider(height: 24),
           _summaryRow(
               "Tổng tiền", "\$${cart?.totalCost.toStringAsFixed(2) ?? "0.00"}",
